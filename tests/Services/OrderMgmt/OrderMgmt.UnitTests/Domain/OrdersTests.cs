@@ -18,8 +18,8 @@ public class OrdersTests
         orderItem.ShouldNotBeNull();
         orderItem.ProductId.ShouldBe(default);
         orderItem.GetProductName().ShouldBe(default);
-        orderItem.GetUnitPrice().ShouldBe(default);
-        orderItem.GetCurrentDiscount().ShouldBe(default);
+        orderItem.GetUnitPrice().ShouldBe(default(decimal));
+        orderItem.GetCurrentDiscount().ShouldBe(default(decimal));
         orderItem.GetPictureUri().ShouldBe(default);
         orderItem.GetUnits().ShouldBe(default);
     }
