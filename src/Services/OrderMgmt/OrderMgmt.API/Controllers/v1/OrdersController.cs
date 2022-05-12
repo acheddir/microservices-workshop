@@ -11,13 +11,8 @@ namespace OrderMgmt.API.Controllers.v1;
 [ApiVersion("1.0")]
 public class OrdersController : ControllerBase
 {
-    private readonly IMediator _mediator;
-    private readonly ILogger _logger;
-
     public OrdersController(IMediator mediator, ILogger<OrdersController> logger)
     {
-        _mediator = mediator;
-        _logger = logger;
     }
 
     /// <summary>

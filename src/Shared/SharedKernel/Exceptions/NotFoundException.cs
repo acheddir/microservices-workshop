@@ -1,5 +1,8 @@
-﻿namespace SharedKernel.Exceptions;
+﻿using System.Runtime.Serialization;
 
+namespace SharedKernel.Exceptions;
+
+[Serializable]
 public class NotFoundException : Exception
 {
     public NotFoundException()
@@ -21,4 +24,6 @@ public class NotFoundException : Exception
         : base($"Entity \"{name}\" ({key}) was not found.")
     {
     }
+    
+    public NotFoundException(SerializationInfo info, StreamingContext ctx) : base(info, ctx) { }
 }

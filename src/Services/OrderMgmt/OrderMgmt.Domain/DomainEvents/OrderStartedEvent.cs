@@ -3,25 +3,35 @@ using OrderMgmt.Domain.Model.Orders;
 
 namespace OrderMgmt.Domain.DomainEvents;
 
+public class UserEventData
+{
+    public Guid UserId { get; set; }
+    public string UserName { get; set; } = string.Empty;
+}
+
+public class CardEventData
+{
+    public Guid CardTypeId { get; set; }
+    public string CardNumber { get; set; } = string.Empty;
+    public string CardSecurityNumber { get; set; } = string.Empty;
+    public string CardHolderName { get; set; } = string.Empty;
+    public DateTime CardExpiration { get; set; }
+}
+
 public class OrderStartedEvent : INotification
 {
     public OrderStartedEvent(
-        Guid userId,
-        string userName,
-        Guid cardTypeId,
-        string cardNumber,
-        string cardSecurityNumber,
-        string cardHolderName,
-        DateTime cardExpiration,
+        UserEventData userData,
+        CardEventData cardData,
         Order order)
     {
-        UserId = userId;
-        UserName = userName;
-        CardTypeId = cardTypeId;
-        CardNumber = cardNumber;
-        CardSecurityNumber = cardSecurityNumber;
-        CardHolderName = cardHolderName;
-        CardExpiration = cardExpiration;
+        UserId = userData.UserId;
+        UserName = userData.UserName;
+        CardTypeId = cardData.CardTypeId;
+        CardNumber = cardData.CardNumber;
+        CardSecurityNumber = cardData.CardSecurityNumber;
+        CardHolderName = cardData.CardHolderName;
+        CardExpiration = cardData.CardExpiration;
         Order = order;
     }
 

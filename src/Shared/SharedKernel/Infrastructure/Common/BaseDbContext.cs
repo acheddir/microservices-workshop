@@ -44,11 +44,16 @@ public abstract class BaseDbContext : DbContext, IUnitOfWork
         return _currentTransaction ??= await Database.BeginTransactionAsync();
     }
     
-    public async Task CommitTransactionAsync(IDbContextTransaction transaction)
+    public Task CommitTransactionAsync(IDbContextTransaction transaction)
     {
         if (transaction == null) throw new ArgumentNullException(nameof(transaction));
         if (transaction != _currentTransaction) throw new InvalidOperationException($"Transaction {transaction.TransactionId} is not current");
 
+        return CommitTransactionInternalAsync(transaction);
+    }
+
+    private async Task CommitTransactionInternalAsync(IDbContextTransaction transaction)
+    {
         try
         {
             await SaveChangesAsync();

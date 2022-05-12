@@ -18,18 +18,6 @@ public static class CorsServiceExtensions
                         .WithExposedHeaders("X-Pagination"));
             });
         }
-        else
-        {
-            //TODO update origins here with env vars or secret
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy(policyName, builder =>
-            //        builder.WithOrigins(origins)
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader()
-            //        .WithExposedHeaders("X-Pagination"));
-            //});
-        }
 
         return services;
     }

@@ -37,7 +37,7 @@ public abstract class BaseEntity
 
     private bool IsTransient()
     {
-        return Id == default;
+        return Id == Guid.Empty;
     }
     
     public override bool Equals(object? obj)
@@ -59,17 +59,7 @@ public abstract class BaseEntity
 
     public override int GetHashCode()
     {
-        return IsTransient() ? base.GetHashCode() : HashCode.Combine(Id.GetHashCode() ^ 31);
-    }
-    
-    public static bool operator ==(BaseEntity? left, BaseEntity? right)
-    {
-        return left?.Equals(right) ?? Equals(right, null);
-    }
-
-    public static bool operator !=(BaseEntity? left, BaseEntity? right)
-    {
-        return !(left == right);
+        return HashCode.Combine(Id.GetHashCode() ^ 31);
     }
 
     public virtual void UpdateDeleted(bool isDeleted)
