@@ -15,9 +15,9 @@ public static class LoggingConfiguration
 
         var loggingLevelSwitch = new LoggingLevelSwitch();
         if (env.IsDevelopment())
-            loggingLevelSwitch.MinimumLevel = LogEventLevel.Debug;
-        if (env.IsProduction())
             loggingLevelSwitch.MinimumLevel = LogEventLevel.Information;
+        if (env.IsProduction())
+            loggingLevelSwitch.MinimumLevel = LogEventLevel.Warning;
         
         var logger = new LoggerConfiguration()
             .MinimumLevel.ControlledBy(loggingLevelSwitch)

@@ -1,6 +1,11 @@
-﻿using System.Text.Json.Serialization;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using HealthChecks.UI.Client;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using OrderMgmt.API.Extensions.Application;
 using OrderMgmt.API.Extensions.Services;
+using OrderMgmt.API.Extensions.Services.EventBus;
+using OrderMgmt.Application.Modules;
 using Serilog;
 
 namespace OrderMgmt.API;
@@ -18,20 +23,21 @@ public class Startup
     
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton(Log.Logger);
-
-        services.AddOrderMgmtDbContext(_config)
-            .AddCorsService("OrderMgmtCorsPolicy", _env)
-            .AddOpenApi(_config)
-            .AddOpenApiVersioning()
-            .AddWebApiServices()
-            .AddHealthChecks();
+        // TODO: add OpenTelemetry
         
         services
-            .AddControllers()
-            .AddJsonOptions(o => o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-        
-        services.AddHealthChecks();
+            .AddOrderMgmtServices()
+            .AddIntegration()
+            .AddEventBus()
+            .AddDatabases(_config)
+            .AddCors("OrderMgmtCorsPolicy", _env)
+            .AddOpenApi(_config)
+            .AddHealthChecks(_config);
+    }
+    
+    public void ConfigureContainer(ContainerBuilder builder)
+    {
+        builder.RegisterModule<MediatorModule>();
     }
     
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -51,14 +57,25 @@ public class Startup
         // A slightly less secure option would be to redirect http to 400, 505, etc.
         app.UseHttpsRedirection();
 
+        app.UseRouting();
         app.UseCors("OrderMgmtCorsPolicy");
 
         app.UseSerilogRequestLogging();
-        app.UseRouting();
+
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>
         {
-            endpoints.MapHealthChecks("/api/health");
+            endpoints.MapHealthChecks("/healthz", new HealthCheckOptions
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+            endpoints.MapHealthChecks("/liveness", new HealthCheckOptions
+            {
+                Predicate = r => r.Name.Contains("self")
+            });
             endpoints.MapControllers();
             
             endpoints.Redirect("/", "/swagger");

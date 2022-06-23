@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Net;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace OrderMgmt.API.Controllers.v1;
@@ -43,9 +44,9 @@ public class OrdersController : ControllerBase
     ///    | `@=`     | Contains                      |  `!@=*`   | Case-insensitive string does not Contains    |
     ///    | `_=`     | Starts with                   |  `!_=*`   | Case-insensitive string does not Starts with |
     /// </remarks>
-    [ProducesResponseType(typeof(object[]), 200)]
-    [ProducesResponseType(400)]
-    [ProducesResponseType(500)]
+    [ProducesResponseType(typeof(object[]), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     [Produces("application/json")]
     [HttpGet(Name = "GetOrders")]
     [MapToApiVersion("1.0")]

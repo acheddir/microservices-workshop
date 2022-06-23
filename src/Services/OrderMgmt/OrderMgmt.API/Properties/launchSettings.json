@@ -14,7 +14,11 @@
       "launchBrowser": true,
       "applicationUrl": "https://localhost:7168;http://localhost:5168",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "RMQ_HOST": "localhost",
+        "RMQ_VIRTUAL_HOST": "/",
+        "RMQ_USERNAME": "guest",
+        "AUTH_PASSWORD": "guest"
       }
     },
     "IIS Express": {

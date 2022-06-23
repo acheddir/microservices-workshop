@@ -1,10 +1,12 @@
 using System.Reflection;
+using Autofac.Extensions.DependencyInjection;
 using OrderMgmt.API;
 using OrderMgmt.API.Extensions.Host;
 using Serilog;
 
 var host = Host.CreateDefaultBuilder(args)
     .UseSerilog()
+    .UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureWebHostDefaults(webBuilder =>
     {
         webBuilder.UseStartup(typeof(Startup).GetTypeInfo().Assembly.FullName!)

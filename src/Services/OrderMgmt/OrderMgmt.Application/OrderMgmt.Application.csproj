@@ -7,13 +7,15 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="Autofac" Version="6.4.0" />
+      <PackageReference Include="MassTransit" Version="8.0.3" />
       <PackageReference Include="MediatR" Version="10.0.1" />
       <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
-      <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.4" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\Shared\SharedKernel\SharedKernel.csproj" />
+      <ProjectReference Include="..\..\..\Shared\SharedKernel.API\SharedKernel.API.csproj" />
+      <ProjectReference Include="..\..\..\Shared\SharedKernel.Application\SharedKernel.Application.csproj" />
     </ItemGroup>
 
 </Project>

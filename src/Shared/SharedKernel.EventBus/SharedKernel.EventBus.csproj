@@ -9,12 +9,7 @@
     <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.6" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.6" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\Shared\SharedKernel.API\SharedKernel.API.csproj" />
-      <ProjectReference Include="..\..\..\Shared\SharedKernel.Infrastructure\SharedKernel.Infrastructure.csproj" />
-      <ProjectReference Include="..\OrderMgmt.Domain\OrderMgmt.Domain.csproj" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5" />
     </ItemGroup>
 
 </Project>
