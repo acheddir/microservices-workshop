@@ -113,7 +113,7 @@ public class OrdersTests
                     f.Finance.Amount(100, 200),
                     f.Finance.Amount(0, 50),
                     f.Image.PlaceImgUrl(),
-                    f.Random.Int(0, 50)))
+                    f.Random.Int(1, 50)))
             .Generate();
 
         Should.Throw<OrderMgmtException>(() =>
