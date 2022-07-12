@@ -1,7 +1,4 @@
-﻿using MassTransit;
-using RabbitMQ.Client;
-
-namespace OrderMgmt.API.Extensions.Services.EventBus;
+﻿namespace OrderMgmt.API.Extensions.Services.EventBus;
 
 public static class ConsumersExtensions
 {

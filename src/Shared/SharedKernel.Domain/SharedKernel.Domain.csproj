@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FluentValidation" Version="11.0.0" />
+      <PackageReference Include="FluentValidation" Version="11.1.0" />
       <PackageReference Include="MediatR.Contracts" Version="1.0.1" />
       <PackageReference Include="Sieve" Version="2.5.5" />
     </ItemGroup>

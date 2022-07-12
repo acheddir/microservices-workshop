@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace SharedKernel.Infrastructure.Utilities;
+﻿namespace SharedKernel.Infrastructure.Utilities;
 
 public class ResilientTransaction
 {

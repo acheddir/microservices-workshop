@@ -1,6 +1,4 @@
-﻿using Swashbuckle.AspNetCore.SwaggerUI;
-
-namespace OrderMgmt.API.Extensions.Application;
+﻿namespace OrderMgmt.API.Extensions.Application;
 
 public static class OpenApiExtensions
 {
@@ -12,6 +10,7 @@ public static class OpenApiExtensions
             config.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Order Management API v1.0");
             config.DocExpansion(DocExpansion.None);
             config.OAuthAppName("Order Management Swagger UI");
+            config.OAuthClientId(configuration["Keycloak:Audience"]);
         });
     }
 }

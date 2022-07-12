@@ -1,8 +1,5 @@
-﻿using System.Reflection;
-using Microsoft.EntityFrameworkCore;
-using OrderMgmt.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
 using SharedKernel.EventBus;
-using SharedKernel.Infrastructure.Common;
 
 namespace OrderMgmt.API.Extensions.Services;
 

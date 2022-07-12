@@ -1,6 +1,4 @@
-﻿using SharedKernel.Domain.Common;
-
-namespace OrderMgmt.Domain.Model.Orders;
+﻿namespace OrderMgmt.Domain.Model.Orders;
 
 public interface IOrderRepository : IRepository<Order>
 {

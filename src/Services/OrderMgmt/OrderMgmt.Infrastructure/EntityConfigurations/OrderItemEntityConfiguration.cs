@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using OrderMgmt.Domain.Model.Orders;
-
-namespace OrderMgmt.Infrastructure.EntityConfigurations;
+﻿namespace OrderMgmt.Infrastructure.EntityConfigurations;
 
 internal class OrderItemEntityConfiguration
     : IEntityTypeConfiguration<OrderItem>

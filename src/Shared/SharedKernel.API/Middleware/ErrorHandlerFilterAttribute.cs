@@ -1,19 +1,8 @@
-﻿using System.Net;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using SharedKernel.API.ActionResults;
-using SharedKernel.Domain.Exceptions;
-
-namespace SharedKernel.API.Middleware;
+﻿namespace SharedKernel.API.Middleware;
 
 public abstract class ErrorHandlerFilterAttribute : ExceptionFilterAttribute
 {
     protected readonly IDictionary<Type, Action<ExceptionContext>> ExceptionHandlers;
-
     protected readonly ILogger Logger;
     protected readonly IWebHostEnvironment Env;
 
@@ -133,11 +122,9 @@ public abstract class ErrorHandlerFilterAttribute : ExceptionFilterAttribute
 
         if (Env.IsDevelopment())
         {
-            json.DeveloperMessage = context.Exception;
+            json.DeveloperMessage = context.Exception.GetBaseException();
         }
-
-        // Result assigned to a result object but in destiny the response is empty. This is a known bug of .net core 1.1
-        // It will be fixed in .net core 1.1.2. See https://github.com/aspnet/Mvc/issues/5594 for more information
+        
         context.Result = new InternalServerErrorObjectResult(json);
         context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 

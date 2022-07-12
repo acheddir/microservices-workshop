@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 using OrderMgmt.Domain.Exceptions;
 using SharedKernel.API.ActionResults;
 using SharedKernel.API.Middleware;
@@ -8,7 +7,7 @@ namespace OrderMgmt.API.Middleware;
 
 public class OrderMgmtErrorHandlerFilterAttribute : ErrorHandlerFilterAttribute
 {
-    protected OrderMgmtErrorHandlerFilterAttribute(ILogger<OrderMgmtErrorHandlerFilterAttribute> logger, IWebHostEnvironment env)
+    public OrderMgmtErrorHandlerFilterAttribute(ILogger<OrderMgmtErrorHandlerFilterAttribute> logger, IWebHostEnvironment env)
         : base(logger, env)
     {
         // Register known exception types and handlers.

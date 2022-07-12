@@ -1,7 +1,4 @@
-﻿using OrderMgmt.Domain.Exceptions;
-using SharedKernel.Domain.Common;
-
-namespace OrderMgmt.Domain.Model.Orders;
+﻿namespace OrderMgmt.Domain.Model.Orders;
 
 public class OrderItem : BaseEntity
 {

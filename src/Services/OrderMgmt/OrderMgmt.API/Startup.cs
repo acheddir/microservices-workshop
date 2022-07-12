@@ -1,14 +1,4 @@
-﻿using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using HealthChecks.UI.Client;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using OrderMgmt.API.Extensions.Application;
-using OrderMgmt.API.Extensions.Services;
-using OrderMgmt.API.Extensions.Services.EventBus;
-using OrderMgmt.Application.Modules;
-using Serilog;
-
-namespace OrderMgmt.API;
+﻿namespace OrderMgmt.API;
 
 public class Startup
 {
@@ -23,8 +13,8 @@ public class Startup
     
     public void ConfigureServices(IServiceCollection services)
     {
-        // TODO: add OpenTelemetry
-        
+        // TODO: add OpenTelemetry later
+
         services
             .AddOrderMgmtServices()
             .AddIntegration()
@@ -32,11 +22,13 @@ public class Startup
             .AddDatabases(_config)
             .AddCors("OrderMgmtCorsPolicy", _env)
             .AddOpenApi(_config)
-            .AddHealthChecks(_config);
+            .AddHealthChecks(_config)
+            .AddAuth(_config);
     }
     
     public void ConfigureContainer(ContainerBuilder builder)
     {
+        builder.RegisterModule<ApplicationModule>();
         builder.RegisterModule<MediatorModule>();
     }
     
@@ -76,8 +68,10 @@ public class Startup
             {
                 Predicate = r => r.Name.Contains("self")
             });
-            endpoints.MapControllers();
+            endpoints.MapHealthChecksUI();
             
+            endpoints.MapControllers();
+
             endpoints.Redirect("/", "/swagger");
         });
         

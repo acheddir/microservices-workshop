@@ -1,12 +1,7 @@
-﻿using FluentValidation;
-using MediatR;
-using Microsoft.Extensions.Logging;
-using SharedKernel.Extensions;
-using ValidationException = SharedKernel.Domain.Exceptions.ValidationException;
+﻿namespace SharedKernel.Application.Behaviors;
 
-namespace SharedKernel.Application.Behaviors;
-
-public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest<TResponse>
+public class ValidatorBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : ICommand<TResponse>
 {
     private readonly ILogger<ValidatorBehavior<TRequest, TResponse>> _logger;
     private readonly IEnumerable<IValidator<TRequest>> _validators;

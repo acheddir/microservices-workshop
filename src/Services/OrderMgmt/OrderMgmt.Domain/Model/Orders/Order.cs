@@ -1,6 +1,4 @@
 ﻿using OrderMgmt.Domain.DomainEvents;
-using OrderMgmt.Domain.Exceptions;
-using SharedKernel.Domain.Common;
 
 namespace OrderMgmt.Domain.Model.Orders;
 

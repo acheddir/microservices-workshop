@@ -1,9 +1,4 @@
-﻿using Serilog;
-using Serilog.Core;
-using Serilog.Events;
-using Serilog.Exceptions;
-
-namespace OrderMgmt.API.Extensions.Host;
+﻿namespace OrderMgmt.API.Extensions.Host;
 
 public static class LoggingConfiguration
 {
@@ -25,7 +20,7 @@ public static class LoggingConfiguration
             .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
             .Enrich.FromLogContext()
             .Enrich.WithEnvironment(env?.EnvironmentName)
-            .Enrich.WithProperty("ApplicationName", env?.ApplicationName)
+            .Enrich.WithProperty("ApplicationName", env?.ApplicationName!)
             .Enrich.WithExceptionDetails()
             .WriteTo.Console();
 

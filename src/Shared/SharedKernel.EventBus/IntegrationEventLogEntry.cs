@@ -30,12 +30,17 @@ public class IntegrationEventLogEntry
     public EventStateEnum State { get; set; }
     public int TimesSent { get; set; }
     public DateTime CreationTime { get; private set; }
-    public string Content { get; private set; }
-    public string TransactionId { get; private set; }
+    public string? Content { get; private set; }
+    public string? TransactionId { get; private set; }
 
     public IntegrationEventLogEntry DeserializeJsonContent(Type type)
     {            
-        IntegrationEvent = JsonSerializer.Deserialize(Content, type, new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }) as IntegrationEvent;
+        IntegrationEvent =
+            JsonSerializer
+                .Deserialize(
+                    Content ?? throw new NullReferenceException(nameof(Content)),
+                    type,
+                    new JsonSerializerOptions() { PropertyNameCaseInsensitive = true }) as IntegrationEvent;
         return this;
     }
 }

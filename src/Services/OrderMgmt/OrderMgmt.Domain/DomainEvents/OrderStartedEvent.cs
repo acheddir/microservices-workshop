@@ -1,5 +1,4 @@
-﻿using MediatR;
-using OrderMgmt.Domain.Model.Orders;
+﻿using OrderMgmt.Domain.Model.Orders;
 
 namespace OrderMgmt.Domain.DomainEvents;
 

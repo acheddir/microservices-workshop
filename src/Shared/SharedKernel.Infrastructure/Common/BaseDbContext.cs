@@ -1,32 +1,34 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
-using SharedKernel.Domain.Common;
-using SharedKernel.Infrastructure.Extensions;
-
-namespace SharedKernel.Infrastructure.Common;
+﻿namespace SharedKernel.Infrastructure.Common;
 
 public abstract class BaseDbContext : DbContext, IUnitOfWork
 {
     private readonly IMediator _mediator;
+    private readonly ICurrentUserService _currentUserService;
     private IDbContextTransaction? _currentTransaction;
 
-    protected BaseDbContext(DbContextOptions options, IMediator mediator) : base(options)
+    protected BaseDbContext(DbContextOptions options, ICurrentUserService currentUserService, IMediator mediator) : base(options)
     {
+        _currentUserService = currentUserService;
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         
         System.Diagnostics.Debug.WriteLine("OrderingContext::ctor ->" + GetHashCode());
     }
 
-    public sealed override int GetHashCode()
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        return base.GetHashCode();
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.FilterSoftDeletedRecords();
     }
+
+    public IDbContextTransaction GetCurrentTransaction() =>
+        _currentTransaction
+        ?? throw new InvalidOperationException("Unfortunately, there's no active transaction");
 
     public bool HasActiveTransaction => _currentTransaction != null;
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
+        UpdateAuditFields();
         return await base.SaveChangesAsync(cancellationToken);
     }
     
@@ -46,8 +48,10 @@ public abstract class BaseDbContext : DbContext, IUnitOfWork
     
     public Task CommitTransactionAsync(IDbContextTransaction transaction)
     {
-        if (transaction == null) throw new ArgumentNullException(nameof(transaction));
-        if (transaction != _currentTransaction) throw new InvalidOperationException($"Transaction {transaction.TransactionId} is not current");
+        if (transaction == null)
+            throw new ArgumentNullException(nameof(transaction));
+        if (transaction != _currentTransaction)
+            throw new InvalidOperationException($"Transaction {transaction.TransactionId} is not current");
 
         return CommitTransactionInternalAsync(transaction);
     }
@@ -89,5 +93,35 @@ public abstract class BaseDbContext : DbContext, IUnitOfWork
             }
         }
     }
+    
+    private void UpdateAuditFields()
+    {
+        var now = DateTime.UtcNow;
+        foreach (var entry in ChangeTracker.Entries<BaseEntity>())
+        {
+            switch (entry.State)
+            {
+                case EntityState.Added:
+                    entry.Entity.UpdateCreationProperties(now, _currentUserService?.UserId);
+                    entry.Entity.UpdateModifiedProperties(now, _currentUserService?.UserId);
+                    break;
 
+                case EntityState.Modified:
+                    entry.Entity.UpdateModifiedProperties(now, _currentUserService?.UserId);
+                    break;
+                
+                case EntityState.Deleted:
+                    entry.State = EntityState.Modified;
+                    entry.Entity.UpdateModifiedProperties(now, _currentUserService?.UserId);
+                    entry.Entity.UpdateIsDeleted(true);
+                    break;
+                case EntityState.Detached:
+                    break;
+                case EntityState.Unchanged:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+    }
 }

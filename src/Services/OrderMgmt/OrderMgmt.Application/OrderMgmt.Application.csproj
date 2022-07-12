@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <PackageReference Include="Autofac" Version="6.4.0" />
+      <PackageReference Include="Dapper" Version="2.0.123" />
       <PackageReference Include="MassTransit" Version="8.0.3" />
       <PackageReference Include="MediatR" Version="10.0.1" />
       <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
@@ -16,6 +17,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\Shared\SharedKernel.API\SharedKernel.API.csproj" />
       <ProjectReference Include="..\..\..\Shared\SharedKernel.Application\SharedKernel.Application.csproj" />
+      <ProjectReference Include="..\OrderMgmt.Infrastructure\OrderMgmt.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

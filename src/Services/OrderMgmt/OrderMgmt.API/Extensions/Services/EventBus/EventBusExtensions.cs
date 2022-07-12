@@ -1,7 +1,4 @@
-﻿using System.Reflection;
-using MassTransit;
-
-namespace OrderMgmt.API.Extensions.Services.EventBus;
+﻿namespace OrderMgmt.API.Extensions.Services.EventBus;
 
 public static class EventBusExtensions
 {

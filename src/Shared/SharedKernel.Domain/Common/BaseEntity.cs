@@ -58,7 +58,7 @@ public abstract class BaseEntity
         _domainEvents.Clear();
     }
 
-    private bool IsTransient()
+    public bool IsTransient()
     {
         return Id == Guid.Empty;
     }

@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using OrderMgmt.Domain.Model.Orders;
-using SharedKernel.Domain.Common;
-
-namespace OrderMgmt.Infrastructure.Repositories;
+﻿namespace OrderMgmt.Infrastructure.Repositories;
 
 public class OrderRepository
     : IOrderRepository

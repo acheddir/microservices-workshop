@@ -17,4 +17,8 @@
       <ProjectReference Include="..\OrderMgmt.Domain\OrderMgmt.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Migrations" />
+    </ItemGroup>
+
 </Project>

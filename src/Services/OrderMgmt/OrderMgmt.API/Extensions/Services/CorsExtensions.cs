@@ -1,6 +1,4 @@
-﻿using OrderMgmt.API.Resources;
-
-namespace OrderMgmt.API.Extensions.Services;
+﻿namespace OrderMgmt.API.Extensions.Services;
 
 public static class CorsExtensions
 {

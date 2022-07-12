@@ -1,6 +1,7 @@
-﻿using System.Net;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Net.Mime;
+using Microsoft.AspNetCore.Authorization;
+using OrderMgmt.Application.Models;
+using OrderMgmt.Application.Queries;
 
 namespace OrderMgmt.API.Controllers.v1;
 
@@ -12,48 +13,54 @@ namespace OrderMgmt.API.Controllers.v1;
 [ApiVersion("1.0")]
 public class OrdersController : ControllerBase
 {
-    public OrdersController(IMediator mediator, ILogger<OrdersController> logger)
+    private readonly ICurrentUserService _currentUserService;
+    private readonly IMediator _mediator;
+    private readonly ILogger<OrdersController> _logger;
+
+    public OrdersController(
+        ICurrentUserService currentUserService,
+        IMediator mediator,
+        ILogger<OrdersController> logger)
     {
+        _currentUserService = currentUserService;
+        _mediator = mediator;
+        _logger = logger;
+    }
+    
+    [Authorize(Policy = "users")]
+    [ProducesResponseType(typeof(IEnumerable<OrderSummary>), (int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
+    [Produces(MediaTypeNames.Application.Json)]
+    [HttpGet]
+    [MapToApiVersion("1.0")]
+    public async Task<OkObjectResult> GetOrdersAsync()
+    {
+        _logger.LogInformation("--> Executing Query: GetOrders");
+        
+        var userId = _currentUserService.UserId;
+        var getOrdersQuery = new GetOrdersFromUserQuery(userId);
+
+        var orders = await _mediator.Send(getOrdersQuery);
+
+        return Ok(orders);
     }
 
-    /// <summary>
-    /// Gets a list of all Orders.
-    /// </summary>
-    /// <response code="200">Orders list returned successfully.</response>
-    /// <response code="400">Orders has missing/invalid values.</response>
-    /// <response code="500">There was an error on the server while creating the orders list.</response>
-    /// <remarks>
-    /// Requests can be narrowed down with a variety of query string values:
-    /// ## Query String Parameters
-    /// - **PageNumber**: An integer value that designates the page of records that should be returned.
-    /// - **PageSize**: An integer value that designates the number of records returned on the given page that you would like to return. This value is capped by the internal MaxPageSize.
-    /// - **SortOrder**: A comma delimited ordered list of property names to sort by. Adding a `-` before the name switches to sorting descendingly.
-    /// - **Filters**: A comma delimited list of fields to filter by formatted as `{Name}{Operator}{Value}` where
-    ///     - {Name} is the name of a filterable property. You can also have multiple names (for OR logic) by enclosing them in brackets and using a pipe delimiter, eg. `(LikeCount|CommentCount)>10` asks if LikeCount or CommentCount is >10
-    ///     - {Operator} is one of the Operators below
-    ///     - {Value} is the value to use for filtering. You can also have multiple values (for OR logic) by using a pipe delimiter, eg.`Title@= new|hot` will return posts with titles that contain the text "new" or "hot"
-    ///
-    ///    | Operator | Meaning                       | Operator  | Meaning                                      |
-    ///    | -------- | ----------------------------- | --------- | -------------------------------------------- |
-    ///    | `==`     | Equals                        |  `!@=`    | Does not Contains                            |
-    ///    | `!=`     | Not equals                    |  `!_=`    | Does not Starts with                         |
-    ///    | `>`      | Greater than                  |  `@=*`    | Case-insensitive string Contains             |
-    ///    | `&lt;`   | Less than                     |  `_=*`    | Case-insensitive string Starts with          |
-    ///    | `>=`     | Greater than or equal to      |  `==*`    | Case-insensitive string Equals               |
-    ///    | `&lt;=`  | Less than or equal to         |  `!=*`    | Case-insensitive string Not equals           |
-    ///    | `@=`     | Contains                      |  `!@=*`   | Case-insensitive string does not Contains    |
-    ///    | `_=`     | Starts with                   |  `!_=*`   | Case-insensitive string does not Starts with |
-    /// </remarks>
-    [ProducesResponseType(typeof(object[]), (int)HttpStatusCode.OK)]
-    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
-    [Produces("application/json")]
-    [HttpGet(Name = "GetOrders")]
+    [Authorize(Policy = "users")]
+    [ProducesResponseType(typeof(Order), (int) HttpStatusCode.OK)]
+    [ProducesResponseType((int) HttpStatusCode.NotFound)]
+    [ProducesResponseType((int) HttpStatusCode.InternalServerError)]
+    [Produces(MediaTypeNames.Application.Json)]
+    [HttpGet]
+    [Route("{orderId:guid}")]
     [MapToApiVersion("1.0")]
-    public async Task<IActionResult> GetOrders()
+    public async Task<OkObjectResult> GetOrderAsync(Guid orderId)
     {
-        await Task.CompletedTask;
+        _logger.LogInformation("--> Executing Query: GetOrder");
         
-        return Ok(Array.Empty<object>());
+        var getOrderQuery = new GetOrderQuery(orderId);
+
+        var order = await _mediator.Send(getOrderQuery);
+
+        return Ok(order);
     }
 }

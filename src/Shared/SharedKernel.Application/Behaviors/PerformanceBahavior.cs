@@ -1,9 +1,4 @@
-﻿using System.Diagnostics;
-using MediatR;
-using Microsoft.Extensions.Logging;
-using SharedKernel.Application.Common.Services;
-
-namespace SharedKernel.Application.Behaviors;
+﻿namespace SharedKernel.Application.Behaviors;
 
 public class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull, IRequest<TResponse>
@@ -13,11 +8,10 @@ public class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
     private readonly ICurrentUserService _currentUserService;
 
     public PerformanceBehavior(
-        Stopwatch timer,
         ILogger<PerformanceBehavior<TRequest, TResponse>> logger,
         ICurrentUserService currentUserService)
     {
-        _timer = timer;
+        _timer = new Stopwatch();
         _logger = logger;
         _currentUserService = currentUserService;
     }
@@ -30,16 +24,15 @@ public class PerformanceBehavior<TRequest, TResponse> : IPipelineBehavior<TReque
 
         var elapsedMilliseconds = _timer.ElapsedMilliseconds;
 
-        if (elapsedMilliseconds > 500)
-        {
-            var requestName = typeof(TRequest).Name;
-            var userId = _currentUserService.UserId;
-            var userName = _currentUserService.UserName;
-            
-            _logger.LogWarning("--> Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@UserName} {@Request}",
-                requestName, elapsedMilliseconds, userId, userName, request);
-        }
-        
+        if (elapsedMilliseconds <= 500) return response;
+
+        var requestName = typeof(TRequest).Name;
+        var userId = _currentUserService.UserId;
+        var userName = _currentUserService.UserName;
+
+        _logger.LogWarning("--> Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@UserName} {@Request}",
+            requestName, elapsedMilliseconds, userId, userName, request);
+
         return response;
     }
 }

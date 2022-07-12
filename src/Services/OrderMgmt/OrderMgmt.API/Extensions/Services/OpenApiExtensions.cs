@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Models;
-using SharedKernel.API.Filters;
+﻿using OrderMgmt.API.Filters;
 
 namespace OrderMgmt.API.Extensions.Services;
 
@@ -19,12 +17,32 @@ public static class OpenApiExtensions
                     Description = "Our API uses a REST based design, leverages the JSON data format, and relies upon HTTPS for transport. We respond with meaningful HTTP response codes and if an error occurs, we include error details in the response body. API Documentation is at ordermgmt.com/dev/docs",
                     Contact = new OpenApiContact
                     {
-                        Name = "Order Management",
-                        Email = "support@ordermgmt.com",
-                        Url = new Uri("https://www.ordermgmt.com"),
+                        Name = "ArcTech",
+                        Email = "support@arctech.me",
+                        Url = new Uri("https://www.arctech.me"),
                     },
                 });
+            
+            config.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+            {
+                Type = SecuritySchemeType.OAuth2,
+                Flows = new OpenApiOAuthFlows
+                {
+                    Implicit = new OpenApiOAuthFlow
+                    {
+                        AuthorizationUrl =
+                            new Uri($"{configuration.GetValue<string>("Keycloak:Authority")}/protocol/openid-connect/auth"),
+                        TokenUrl =
+                            new Uri($"{configuration.GetValue<string>("Keycloak:Authority")}/protocol/openid-connect/token"),
+                        Scopes = new Dictionary<string, string>
+                        {
+                            { "ordermgmt", "Order Management Scope" }
+                        }
+                    }
+                }
+            });
 
+            config.OperationFilter<AuthorizeCheckOperationFilter>();
             config.OperationFilter<RemoveVersionParameterFilter>();
             config.DocumentFilter<ReplaceVersionWithExactValueInPathFilter>();
             

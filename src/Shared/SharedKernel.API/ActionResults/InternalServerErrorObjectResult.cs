@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
-namespace SharedKernel.API.ActionResults;
+﻿namespace SharedKernel.API.ActionResults;
 
 public class InternalServerErrorObjectResult : ObjectResult
 {

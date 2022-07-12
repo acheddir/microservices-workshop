@@ -1,13 +1,4 @@
-﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using Serilog.Context;
-using SharedKernel.Application.Common;
-using SharedKernel.Application.Common.Services;
-using SharedKernel.Extensions;
-using SharedKernel.Infrastructure.Common;
-
-namespace SharedKernel.Application.Behaviors;
+﻿namespace SharedKernel.Application.Behaviors;
 
 public class TransactionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : ICommand<TResponse>

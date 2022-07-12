@@ -1,9 +1,7 @@
 ﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using SharedKernel.Application.Common.Services;
 using SharedKernel.Extensions;
 
-namespace OrderMgmt.Application.Services;
+namespace OrderMgmt.API.Services;
 
 public class CurrentUserService : ICurrentUserService
 {
@@ -16,6 +14,7 @@ public class CurrentUserService : ICurrentUserService
 
     public string? UserId => _httpContextAccessor.HttpContext?.User?.GetUserId();
     public string? UserName => _httpContextAccessor.HttpContext?.User?.GetUserName();
+    public string? Email => _httpContextAccessor.HttpContext?.User?.GetUserEmail();
     
     public ClaimsPrincipal? User => _httpContextAccessor.HttpContext?.User;
 }

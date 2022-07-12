@@ -11,15 +11,7 @@ public static class EndpointExtensions
         return Redirect(endpoints,
             new Redirective(from, to));
     }
-
-    public static IEndpointRouteBuilder RedirectPermanent(
-        this IEndpointRouteBuilder endpoints,
-        string from, string to)
-    {
-        return Redirect(endpoints,
-            new Redirective(from, to, true));
-    }
-
+    
     public static IEndpointRouteBuilder Redirect(
         this IEndpointRouteBuilder endpoints,
         params Redirective[] paths)
@@ -35,5 +27,13 @@ public static class EndpointExtensions
         }
 
         return endpoints;
+    }
+
+    public static IEndpointRouteBuilder RedirectPermanent(
+        this IEndpointRouteBuilder endpoints,
+        string from, string to)
+    {
+        return Redirect(endpoints,
+            new Redirective(from, to, true));
     }
 }

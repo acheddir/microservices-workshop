@@ -1,10 +1,4 @@
-﻿using System.Reflection;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using OrderMgmt.Domain.Model.Orders;
-using SharedKernel.Infrastructure.Common;
-
-namespace OrderMgmt.Infrastructure;
+﻿namespace OrderMgmt.Infrastructure;
 
 public class OrderMgmtContext : BaseDbContext
 {
@@ -13,14 +7,18 @@ public class OrderMgmtContext : BaseDbContext
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderItem> OrderItems => Set<OrderItem>();
     public DbSet<OrderStatus> OrderStatus => Set<OrderStatus>();
+    public DbSet<PaymentMethod> Payments { get; set; }
+    public DbSet<Customer> Customers { get; set; }
+    public DbSet<CardType> CardTypes { get; set; }
  
-    public OrderMgmtContext(DbContextOptions<OrderMgmtContext> options, IMediator mediator)
-        : base(options, mediator)
+    public OrderMgmtContext(DbContextOptions<OrderMgmtContext> options, ICurrentUserService currentUserService, IMediator mediator)
+        : base(options, currentUserService, mediator)
     {
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }

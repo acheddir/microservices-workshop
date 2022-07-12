@@ -1,0 +1,37 @@
+﻿// Global using directives
+
+global using System.Data.Common;
+global using System.Net;
+global using System.Reflection;
+global using System.Text.Json.Serialization;
+global using Autofac;
+global using Autofac.Extensions.DependencyInjection;
+global using FluentValidation.AspNetCore;
+global using HealthChecks.UI.Client;
+global using MassTransit;
+global using MediatR;
+global using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Extensions.Diagnostics.HealthChecks;
+global using Microsoft.OpenApi.Models;
+global using OrderMgmt.API;
+global using OrderMgmt.API.Controllers.v1;
+global using OrderMgmt.API.Extensions.Application;
+global using OrderMgmt.API.Extensions.Host;
+global using OrderMgmt.API.Extensions.Services;
+global using OrderMgmt.API.Extensions.Services.EventBus;
+global using OrderMgmt.API.Middleware;
+global using OrderMgmt.API.Resources;
+global using OrderMgmt.API.Services;
+global using OrderMgmt.Application.Modules;
+global using OrderMgmt.Application.Services;
+global using OrderMgmt.Infrastructure;
+global using Serilog;
+global using Serilog.Core;
+global using Serilog.Events;
+global using Serilog.Exceptions;
+global using SharedKernel.API.Filters;
+global using SharedKernel.EventBus.Services;
+global using SharedKernel.Infrastructure.Common;
+global using Sieve.Services;
+global using Swashbuckle.AspNetCore.SwaggerUI;

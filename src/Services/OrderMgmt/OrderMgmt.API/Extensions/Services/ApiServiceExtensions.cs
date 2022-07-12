@@ -1,15 +1,4 @@
-﻿using System.Reflection;
-using System.Text.Json.Serialization;
-using FluentValidation.AspNetCore;
-using MediatR;
-using OrderMgmt.API.Controllers.v1;
-using OrderMgmt.API.Middleware;
-using OrderMgmt.Application.Services;
-using Serilog;
-using SharedKernel.Application.Common.Services;
-using Sieve.Services;
-
-namespace OrderMgmt.API.Extensions.Services;
+﻿namespace OrderMgmt.API.Extensions.Services;
 
 public static class ApiServiceExtensions
 {

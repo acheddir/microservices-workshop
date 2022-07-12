@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace OrderMgmt.Domain.DomainEvents;
+﻿namespace OrderMgmt.Domain.DomainEvents;
 
 public class OrderStatusChangedToStockConfirmedEvent : INotification
 {

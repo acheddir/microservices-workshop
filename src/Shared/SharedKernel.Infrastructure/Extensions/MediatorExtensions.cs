@@ -1,8 +1,4 @@
-﻿using MediatR;
-using SharedKernel.Domain.Common;
-using SharedKernel.Infrastructure.Common;
-
-namespace SharedKernel.Infrastructure.Extensions;
+﻿namespace SharedKernel.Infrastructure.Extensions;
 
 public static class MediatorExtensions
 {

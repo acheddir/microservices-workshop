@@ -1,6 +1,4 @@
-﻿using MediatR;
-
-namespace SharedKernel.Application.Common;
+﻿namespace SharedKernel.Application.Common;
 
 public interface ICommand : IRequest<Unit>
 {

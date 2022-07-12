@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace SharedKernel.Application.Common.Models;
+﻿namespace SharedKernel.Application.Common.Models;
 
 public class PagedList<T> : List<T>
 {

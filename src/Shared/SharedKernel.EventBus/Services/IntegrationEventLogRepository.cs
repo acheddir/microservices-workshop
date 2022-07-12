@@ -6,13 +6,13 @@ using SharedKernel.EventBus.Events;
 
 namespace SharedKernel.EventBus.Services;
 
-public sealed class IntegrationEventLogService : IIntegrationEventLogService, IDisposable
+public sealed class IntegrationEventLogRepository : IIntegrationEventLogRepository, IDisposable
 {
     private readonly IntegrationEventLogContext _integrationEventLogContext;
     private readonly List<Type> _eventTypes;
     private volatile bool _disposedValue;
 
-    public IntegrationEventLogService(DbConnection dbConnection)
+    public IntegrationEventLogRepository(DbConnection dbConnection)
     {
         var connection = dbConnection ?? throw new ArgumentNullException(nameof(dbConnection));
         _integrationEventLogContext = new IntegrationEventLogContext(
@@ -36,7 +36,7 @@ public sealed class IntegrationEventLogService : IIntegrationEventLogService, ID
         if (result.Any())
         {
             return result.OrderBy(o => o.CreationTime)
-                .Select(e => e.DeserializeJsonContent(_eventTypes.Find(t => t.Name == e.EventTypeShortName)));
+                .Select(e => e.DeserializeJsonContent(_eventTypes.Find(t => t.Name == e.EventTypeShortName)!));
         }
 
         return new List<IntegrationEventLogEntry>();
